@@ -25,9 +25,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+
 public class SampleStreamExample {
 
-  public static void run(String consumerKey, String consumerSecret, String token, String secret) throws InterruptedException {
+  public static void run() throws InterruptedException {
+		TwitterCredential tc = new TwitterCredential();
+
     // Create an appropriately sized blocking queue
     BlockingQueue<String> queue = new LinkedBlockingQueue<String>(10000);
 
@@ -36,7 +39,7 @@ public class SampleStreamExample {
     StatusesSampleEndpoint endpoint = new StatusesSampleEndpoint();
     endpoint.stallWarnings(false);
 
-    Authentication auth = new OAuth1(consumerKey, consumerSecret, token, secret);
+    Authentication auth = new OAuth1(tc.consumerKey, tc.consumerSecret, tc.token, tc.secret);
     //Authentication auth = new com.twitter.hbc.httpclient.auth.BasicAuth(username, password);
 
     // Create a new BasicClient. By default gzip is enabled.
@@ -52,7 +55,8 @@ public class SampleStreamExample {
     client.connect();
 
     // Do whatever needs to be done with messages
-    for (int msgRead = 0; msgRead < 1000; msgRead++) {
+    //for (int msgRead = 0; msgRead < 1000; msgRead++) {
+    for (int msgRead = 0; msgRead < 3; msgRead++) {
       if (client.isDone()) {
         System.out.println("Client connection closed unexpectedly: " + client.getExitEvent().getMessage());
         break;
@@ -74,9 +78,9 @@ public class SampleStreamExample {
 
   public static void main(String[] args) {
     try {
-      SampleStreamExample.run(args[0], args[1], args[2], args[3]);
+      SampleStreamExample.run();
     } catch (InterruptedException e) {
       System.out.println(e);
-    }
+		}
   }
 }
